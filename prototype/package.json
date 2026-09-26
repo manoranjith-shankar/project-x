@@ -1,0 +1,21 @@
+{
+  "name": "john-workflow-agent-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check server.mjs && node --check public/app.js && node --check mcp/workspace-mcp.mjs",
+    "test:ui": "node scripts/ui-smoke.mjs",
+    "pdf": "bash scripts/export-solution-pdf.sh"
+  },
+  "dependencies": {
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "playwright": "^1.51.0"
+  }
+}

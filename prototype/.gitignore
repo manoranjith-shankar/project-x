@@ -1,0 +1,9 @@
+.env
+hermes-home
+node_modules
+scripts/node_modules
+scripts/screenshots
+workspace/action-log.md
+workspace/pending-draft.json
+workspace/added.json
+.DS_Store

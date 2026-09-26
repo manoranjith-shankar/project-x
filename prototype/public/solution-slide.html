@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>John · Solution</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,520&family=Outfit:wght@400;500;560&display=swap" rel="stylesheet" />
+    <style>
+      @page {
+        size: 13.333in 7.5in;
+        margin: 0;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        width: 13.333in;
+        height: 7.5in;
+        overflow: hidden;
+      }
+      body {
+        background: #141210;
+        color: #f7f4ef;
+        font-family: Outfit, system-ui, sans-serif;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .slide {
+        width: 13.333in;
+        height: 7.5in;
+        padding: 0.42in 0.48in 0.38in;
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        gap: 0.28in;
+      }
+      .head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding-bottom: 0.14in;
+        border-bottom: 1px solid #3a3530;
+      }
+      .mark {
+        margin: 0;
+        font-family: Fraunces, Georgia, serif;
+        font-size: 34pt;
+        font-weight: 520;
+        letter-spacing: -0.04em;
+        line-height: 1;
+      }
+      .sub {
+        margin: 0;
+        max-width: 5.2in;
+        text-align: right;
+        font-size: 11pt;
+        line-height: 1.35;
+        color: #b5aea3;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 0.28in;
+      }
+      .card {
+        background: #1f1c18;
+        border: 1px solid #3a3530;
+        border-radius: 10px;
+        padding: 0.22in 0.24in;
+      }
+      .num {
+        margin: 0 0 0.06in;
+        font-size: 9pt;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #8f877c;
+      }
+      h2 {
+        margin: 0 0 0.12in;
+        font-family: Fraunces, Georgia, serif;
+        font-size: 17pt;
+        font-weight: 520;
+        letter-spacing: -0.03em;
+        line-height: 1.08;
+      }
+      .lead {
+        margin: 0 0 0.12in;
+        font-size: 10.5pt;
+        line-height: 1.42;
+        color: #ddd6cb;
+      }
+      .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.12in;
+        margin-top: 0.1in;
+      }
+      .box {
+        border-radius: 8px;
+        padding: 0.12in 0.14in;
+        font-size: 9.5pt;
+        line-height: 1.38;
+      }
+      .box.ok { background: #242019; border: 1px solid #4a443c; }
+      .box.bad { background: #2a1f1a; border: 1px solid #6b3d2e; color: #f0ddd6; }
+      .box strong {
+        display: block;
+        margin-bottom: 0.06in;
+        font-size: 8.5pt;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #a89f92;
+      }
+      .box.bad strong { color: #c98a72; }
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 9.8pt;
+        line-height: 1.38;
+        color: #ddd6cb;
+      }
+      li {
+        position: relative;
+        padding-left: 0.16in;
+        margin: 0.07in 0;
+      }
+      li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.45em;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #5c8f6a;
+      }
+      li strong { color: #fff; font-weight: 560; }
+      .arch {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        min-height: 0;
+      }
+      .arch h2 { font-size: 15pt; margin-bottom: 0.08in; }
+      .diagram {
+        width: 100%;
+        height: 100%;
+        min-height: 1.55in;
+      }
+      .foot {
+        margin: 0.08in 0 0;
+        font-size: 8.5pt;
+        line-height: 1.35;
+        color: #8f877c;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="slide">
+      <header class="head">
+        <h1 class="mark">John</h1>
+        <p class="sub">Private workspace agent. Turns mail, calls, calendar, and pipeline into one action—and holds it until you approve.</p>
+      </header>
+
+      <div class="row">
+        <section class="card">
+          <p class="num">1 · The problem</p>
+          <h2>The company already decided. The mail about to leave says something else.</h2>
+          <p class="lead">
+            Pieces sit in different places: minutes from the call, overnight mail, an unsent draft, today's calendar, the deal sheet. Teams still ship whichever reply is fastest. That reply becomes the record.
+          </p>
+          <div class="split">
+            <div class="box ok">
+              <strong>Agreed on the call</strong>
+              Payroll stays closed.<br />
+              CFO is mailed only after Priya says yes.
+            </div>
+            <div class="box bad">
+              <strong>Unsent draft + client mail</strong>
+              Open the payroll mailbox.<br />
+              Mail the CFO every Friday on its own.
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <p class="num">2 · Why?</p>
+          <h2>Why this problem, and why an agent</h2>
+          <ul>
+            <li><strong>Cost is real.</strong> Wrong confirmation is written permission—payroll access, an unchecked CFO number, and a security review that files your mail.</li>
+            <li><strong>One morning, one product.</strong> Brief, follow-up, quiet deals, and "what did we approve?" are the same desk, not four tools.</li>
+            <li><strong>Rules and search are not enough.</strong> Nothing in one file flags the contradiction; something must read sources together and draft the fix.</li>
+            <li><strong>John's job.</strong> Draft waits. Approve writes the action log. The next question must quote that log—it cannot invent an earlier yes.</li>
+            <li><strong>Scoped workspace.</strong> Only sources you added open here. Out-of-scope asks stop before a draft is written.</li>
+          </ul>
+        </section>
+      </div>
+
+      <section class="card arch">
+        <div>
+          <p class="num">3 · Architecture</p>
+          <h2>Ask → classify → skill → tools → worker → draft → log</h2>
+        </div>
+        <svg class="diagram" viewBox="0 0 920 120" role="img" aria-label="Architecture flow">
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="#9a9288" />
+            </marker>
+            <style>
+              .n { fill: #2a2622; stroke: #5c554c; stroke-width: 1.2; }
+              .ng { fill: #1e2a22; stroke: #4a6b55; }
+              .nr { fill: #2a1f1c; stroke: #7a4a3a; }
+              .t { fill: #f7f4ef; font: 500 11px Outfit, system-ui, sans-serif; }
+              .ts { fill: #c4bcb2; font: 400 9px Outfit, system-ui, sans-serif; }
+              .l { stroke: #9a9288; stroke-width: 1.2; fill: none; marker-end: url(#arrow); }
+            </style>
+          </defs>
+          <g transform="translate(8,44)">
+            <rect class="n" x="0" y="0" width="72" height="36" rx="6" /><text class="t" x="36" y="22" text-anchor="middle">You ask</text>
+            <rect class="n" x="88" y="0" width="78" height="36" rx="6" /><text class="t" x="127" y="22" text-anchor="middle">Classifier</text>
+            <rect class="nr" x="182" y="0" width="62" height="36" rx="6" /><text class="ts" x="213" y="22" text-anchor="middle">Refused</text>
+            <rect class="n" x="260" y="0" width="58" height="36" rx="6" /><text class="t" x="289" y="22" text-anchor="middle">Skill</text>
+            <rect class="n" x="334" y="0" width="118" height="36" rx="6" /><text class="ts" x="393" y="22" text-anchor="middle">Workspace tools</text>
+            <rect class="n" x="468" y="0" width="132" height="36" rx="6" /><text class="ts" x="534" y="18" text-anchor="middle">Inbox · Calendar</text><text class="ts" x="534" y="30" text-anchor="middle">Call · Pipeline</text>
+            <rect class="n" x="616" y="0" width="64" height="36" rx="6" /><text class="t" x="648" y="22" text-anchor="middle">Worker</text>
+            <rect class="n" x="696" y="0" width="72" height="36" rx="6" /><text class="ts" x="732" y="22" text-anchor="middle">Draft waits</text>
+            <rect class="ng" x="784" y="0" width="72" height="36" rx="6" /><text class="t" x="820" y="22" text-anchor="middle">Action log</text>
+            <path class="l" d="M72 18 H88" />
+            <path class="l" d="M166 18 H182" />
+            <path class="l" d="M244 10 H260" />
+            <path class="l" d="M318 18 H334" />
+            <path class="l" d="M452 18 H468" />
+            <path class="l" d="M600 18 H616" />
+            <path class="l" d="M680 18 H696" />
+            <path class="l" d="M768 18 H784" />
+            <path class="l" d="M820 44 V56 H393 V44" style="marker-end:none" stroke-dasharray="4 3" opacity="0.55" />
+            <text class="ts" x="600" y="68" text-anchor="middle">Next question reads the log</text>
+          </g>
+          <text class="ts" x="460" y="108" text-anchor="middle">Hermes: one agent · skill per job · read_source + propose_draft (no send) · memory on the next turn</text>
+        </svg>
+        <p class="foot">Flash classifies (brief, follow-up, quiet deals, recall, or refused). Pro worker reads only allowlisted sources and proposes drafts. UI shows skill name, tool trace, and approve/hold—not a black box.</p>
+      </section>
+    </article>
+  </body>
+</html>

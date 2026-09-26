@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>John AI Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,520;9..144,640&family=Outfit:wght@380;500;560&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="top">
+        <div class="brand">
+          <span class="mark">John AI Agent</span>
+        </div>
+      </header>
+      <ol class="rail" id="rail">
+        <li><button type="button" data-rail="1">The problem</button></li>
+        <li><button type="button" data-rail="2">John</button></li>
+      </ol>
+
+      <section id="lander" class="lander">
+        <p class="eyebrow">The actual problem enterprises face</p>
+        <h1>Enterprise workflows break at the handoff.</h1>
+        <p class="lede promise">A system is updated, but the person who must act never sees it. John joins the context inside Slack, answers the status, and offers the next action.</p>
+        <ul class="issues">
+          <li><strong>Status is trapped.</strong> Finance updates one system while Sales, Operations, or the supplier waits in another channel.</li>
+          <li><strong>Ownership is unclear.</strong> Everyone can see part of the workflow; nobody knows who owes the next update.</li>
+          <li><strong>The follow-up is missed.</strong> A simple status email is forgotten, causing escalation, delay, or lost trust.</li>
+        </ul>
+        <button id="open-john" type="button">Open John</button>
+      </section>
+
+      <div id="desk" class="layout" hidden>
+        <aside class="side">
+          <p class="eyebrow">Sources</p>
+          <p id="empty-note" class="log-note">Add components on the right. John can open them only after that.</p>
+          <div id="sources"></div>
+          <div class="side-rule" aria-hidden="true"></div>
+          <p class="eyebrow">Action log</p>
+          <p class="log-note">Empty until you Approve or Hold.</p>
+          <pre id="log" class="log">Nothing has left this workspace.</pre>
+          <button id="reset" class="reset" type="button">Clear workspace</button>
+        </aside>
+        <main class="desk-main">
+          <section id="john" class="demo-section">
+            <header class="desk-head">
+              <p class="eyebrow">John in Slack</p>
+              <h2 class="desk-title">Ask for the status. Get the next action.</h2>
+              <p class="lede desk-lede">John lives where the team already works. This private workspace controls which workflow sources it may use.</p>
+            </header>
+
+            <section id="setup" class="guide setup">
+              <h2>1 · Connect the workflow sources</h2>
+              <p id="empty-title" class="setup-lead"><strong>A source is a tool integration</strong> with a system such as Microsoft 365, Teams, or SAP. Adding it gives John's allowlisted workspace tool read access to the selected records—nothing else.</p>
+              <p class="source-instruction">After connecting a source, click it on the left to inspect the exact JSON John can read.</p>
+              <div class="bits" id="adds"></div>
+            </section>
+
+            <section class="guide without-agent" id="ordinary">
+              <h2>2 · See the workflow without John</h2>
+              <p class="guide-lead"><strong>The problem:</strong> Finance moved INV-2048 into processing, but Mano did not see the update in the shared mailbox. The supplier asked for status before noon, nobody replied, and the delivery slot was put at risk.</p>
+              <button id="simulate-flow" class="btn-secondary" type="button">Simulate without John</button>
+              <div id="accordion" class="accordion" hidden></div>
+
+              <article class="complex-case">
+                <p class="tag">Complex case · ₹7.2 lakh at risk</p>
+                <h3>A revised invoice becomes a duplicate payment</h3>
+                <p class="guide-lead">A supplier emails a corrected invoice with a new filename. SAP imports it as a second payable item because the invoice IDs differ, even though the vendor, PO, and amount are identical.</p>
+                <div class="trigger-note"><strong>Who starts John?</strong><span>A workflow scheduler runs a cron trigger at 15:30—before the 16:00 SAP payment run. This button simulates that scheduled event.</span></div>
+                <button id="simulate-complex" class="btn-secondary" type="button">Simulate 15:30 cron trigger</button>
+                <div id="complex-flow" class="complex-flow" hidden></div>
+              </article>
+            </section>
+
+            <section class="guide flows-section">
+              <h2>3 · Ask John in Slack</h2>
+              <p class="guide-lead">Click the suggested question. It is posted as Mano—there is no second Send step.</p>
+              <div class="slack-surface" aria-label="Slack channel with John">
+                <header class="slack-channel">
+                  <span class="slack-icon">#</span>
+                  <div class="slack-channel-copy">
+                    <strong>invoice-operations</strong>
+                    <span>Private channel · John workflow app</span>
+                  </div>
+                  <span class="slack-status">● John online</span>
+                </header>
+                <div id="slack-thread" class="slack-thread">
+                  <div class="slack-message">
+                    <span class="slack-avatar">J</span>
+                    <p><strong>John</strong><small>APP</small><br />Ask me about an invoice. I will check only the sources in this workspace and show what I opened.</p>
+                  </div>
+                </div>
+                <div class="slack-suggestions">
+                  <span>Suggested</span>
+                  <div class="flows" id="chips"></div>
+                </div>
+                <p class="compose-label">Message #invoice-operations</p>
+                <form id="ask" class="ask ask-bar">
+                  <textarea id="question" aria-label="Ask John">@john what is the status of invoice INV-2048?</textarea>
+                  <button id="submit" type="submit">Send</button>
+                </form>
+                <p id="status" class="status"></p>
+                <div id="error" class="error" hidden></div>
+                <div id="result" class="result">
+                  <p id="result-empty" class="result-empty">Add all four sources to enable John.</p>
+                  <div id="result-body"></div>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <p class="foot">This demo reads connected sources and replies in Slack. See the demo script for how AI is used, technical choices, and the follow-up build.</p>
+        </main>
+      </div>
+      <dialog id="source-dialog" class="source-dialog">
+        <header class="source-dialog-head">
+          <div>
+            <p class="eyebrow">Connected tool integration</p>
+            <h2 id="source-dialog-title">Source data</h2>
+            <p id="source-dialog-meta"></p>
+          </div>
+          <button id="source-close" class="source-close" type="button" aria-label="Close source data">Close</button>
+        </header>
+        <p class="source-dialog-note">This is the complete payload exposed to John through the workspace tool.</p>
+        <pre id="source-view" class="source-json"></pre>
+      </dialog>
+    </div>
+    <script src="/app.js"></script>
+  </body>
+</html>

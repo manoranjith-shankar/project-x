@@ -1,0 +1,255 @@
+{
+  "inbox": {
+    "integration": {
+      "name": "Microsoft 365 Mail",
+      "connection": "operations@harborops.example",
+      "access": "read-only",
+      "tool": "workspace.read_source",
+      "last_sync": "2026-09-26T11:10:00+05:30"
+    },
+    "records": [
+      {
+        "id": "mail-1010",
+        "from": "ap@harborops.example",
+        "to": ["mano@harborops.example"],
+        "cc": ["finance-ops@harborops.example"],
+        "received_at": "2026-09-26T10:15:00+05:30",
+        "subject": "INV-2048 moved to processing",
+        "body": "Invoice INV-2048 for Northstar Systems passed the PO check and is now in processing. It is queued for today's SAP payment run at 16:00.",
+        "thread_id": "invoice-2048",
+        "labels": ["Finance Operations", "Unread"],
+        "has_reply": false
+      },
+      {
+        "id": "mail-1011",
+        "from": "accounts@northstar.example",
+        "to": ["mano@harborops.example"],
+        "cc": ["operations@harborops.example"],
+        "received_at": "2026-09-26T11:05:00+05:30",
+        "subject": "Status of INV-2048",
+        "body": "Hi Mano, can you confirm where invoice INV-2048 is? We need an update before noon to keep the delivery slot.",
+        "thread_id": "invoice-2048",
+        "labels": ["Supplier", "Priority"],
+        "has_reply": false
+      },
+      {
+        "id": "mail-1009",
+        "from": "procurement@harborops.example",
+        "to": ["finance-ops@harborops.example"],
+        "cc": [],
+        "received_at": "2026-09-26T09:40:00+05:30",
+        "subject": "PO mismatch on INV-2049",
+        "body": "INV-2049 is on hold because line item 4 does not match PO-7781. Procurement review is open.",
+        "thread_id": "invoice-2049",
+        "labels": ["Procurement"],
+        "has_reply": true
+      },
+      {
+        "id": "mail-1008",
+        "from": "treasury@harborops.example",
+        "to": ["finance-ops@harborops.example"],
+        "cc": [],
+        "received_at": "2026-09-26T09:05:00+05:30",
+        "subject": "Today's SAP payment run",
+        "body": "The domestic vendor payment run remains scheduled for 16:00. Final queue closes at 15:30.",
+        "thread_id": "sap-run-20260926",
+        "labels": ["Treasury"],
+        "has_reply": true
+      },
+      {
+        "id": "mail-1007",
+        "from": "billing@bluerock.example",
+        "to": ["operations@harborops.example"],
+        "cc": [],
+        "received_at": "2026-09-26T08:52:00+05:30",
+        "subject": "Credit note CN-448",
+        "body": "Please confirm that credit note CN-448 will be adjusted against our September invoice.",
+        "thread_id": "credit-note-448",
+        "labels": ["Supplier"],
+        "has_reply": true
+      },
+      {
+        "id": "mail-1006",
+        "from": "warehouse@harborops.example",
+        "to": ["operations@harborops.example"],
+        "cc": ["mano@harborops.example"],
+        "received_at": "2026-09-26T08:35:00+05:30",
+        "subject": "Northstar delivery slot",
+        "body": "The receiving bay is reserved for Northstar until noon confirmation. Release it if the supplier cannot proceed.",
+        "thread_id": "northstar-delivery",
+        "labels": ["Operations"],
+        "has_reply": false
+      },
+      {
+        "id": "mail-1005",
+        "from": "noreply@sap.harborops.example",
+        "to": ["finance-ops@harborops.example"],
+        "cc": [],
+        "received_at": "2026-09-26T08:10:00+05:30",
+        "subject": "AP queue validation completed",
+        "body": "Morning AP validation completed with 42 invoices ready and 2 invoices held for review.",
+        "thread_id": "sap-validation-20260926",
+        "labels": ["System"],
+        "has_reply": false
+      },
+      {
+        "id": "mail-1004",
+        "from": "billing@apexindustrial.example",
+        "to": ["finance-ops@harborops.example"],
+        "cc": ["operations@harborops.example"],
+        "received_at": "2026-09-26T10:42:00+05:30",
+        "subject": "Revised invoice APX-778-R — corrected GST address",
+        "body": "Please use the attached revised invoice APX-778-R for INR 720000 against PO-8842. It replaces APX-778; only our GST address has changed.",
+        "thread_id": "apex-apx-778",
+        "labels": ["Supplier", "Attachment", "Unread"],
+        "has_reply": false
+      },
+      {
+        "id": "mail-1003",
+        "from": "billing@apexindustrial.example",
+        "to": ["finance-ops@harborops.example"],
+        "cc": ["operations@harborops.example"],
+        "received_at": "2026-09-25T16:20:00+05:30",
+        "subject": "Invoice APX-778 against PO-8842",
+        "body": "Please find invoice APX-778 for INR 720000 against PO-8842 for September maintenance services.",
+        "thread_id": "apex-apx-778",
+        "labels": ["Supplier", "Attachment"],
+        "has_reply": true
+      },
+      {
+        "id": "mail-1002",
+        "from": "finance-controller@harborops.example",
+        "to": ["finance-ops@harborops.example"],
+        "cc": ["operations@harborops.example"],
+        "received_at": "2026-09-25T13:00:00+05:30",
+        "subject": "Vendor communication ownership",
+        "body": "Finance Operations will update invoice status. The Operations owner must update the supplier when a status changes.",
+        "thread_id": "ap-ownership",
+        "labels": ["Policy"],
+        "has_reply": true
+      }
+    ]
+  },
+  "calendar": {
+    "integration": {
+      "name": "Microsoft 365 Calendar",
+      "connection": "operations@harborops.example",
+      "access": "read-only",
+      "tool": "workspace.read_source",
+      "last_sync": "2026-09-26T11:10:00+05:30"
+    },
+    "records": [
+      {
+        "id": "event-2048-status",
+        "title": "Northstar supplier update due",
+        "starts_at": "2026-09-26T12:00:00+05:30",
+        "ends_at": "2026-09-26T12:15:00+05:30",
+        "owner": "mano@harborops.example",
+        "participants": ["operations@harborops.example"],
+        "status": "confirmed",
+        "linked_record": "INV-2048"
+      },
+      {
+        "id": "event-sap-run",
+        "title": "SAP domestic payment run",
+        "starts_at": "2026-09-26T16:00:00+05:30",
+        "ends_at": "2026-09-26T16:30:00+05:30",
+        "owner": "treasury@harborops.example",
+        "participants": ["finance-ops@harborops.example"],
+        "status": "confirmed",
+        "linked_record": "INV-2048"
+      },
+      {
+        "id": "event-ap-standup",
+        "title": "Accounts payable stand-up",
+        "starts_at": "2026-09-26T09:30:00+05:30",
+        "ends_at": "2026-09-26T09:45:00+05:30",
+        "owner": "finance-ops@harborops.example",
+        "participants": ["mano@harborops.example", "procurement@harborops.example"],
+        "status": "completed",
+        "linked_record": "meeting-ap-0926"
+      }
+    ]
+  },
+  "call-note": {
+    "integration": {
+      "name": "Microsoft Teams",
+      "connection": "Accounts payable stand-up",
+      "access": "read-only",
+      "tool": "workspace.read_source",
+      "last_sync": "2026-09-26T09:47:00+05:30"
+    },
+    "records": [
+      {
+        "id": "meeting-ap-0926",
+        "title": "Accounts payable stand-up",
+        "occurred_at": "2026-09-26T09:30:00+05:30",
+        "participants": ["Mano", "Finance Operations", "Procurement"],
+        "decisions": [
+          "Finance Operations updates the invoice register.",
+          "Mano tells the supplier when an invoice moves into processing."
+        ],
+        "owners": [
+          {"name": "Finance Operations", "action": "Run SAP payment batch", "due_at": "2026-09-26T16:00:00+05:30"},
+          {"name": "Mano", "action": "Update Northstar Systems", "due_at": "2026-09-26T12:00:00+05:30"}
+        ],
+        "risk": "Northstar may release the reserved delivery slot if no update is sent before noon."
+      }
+    ]
+  },
+  "pipeline": {
+    "integration": {
+      "name": "SAP S/4HANA Accounts Payable",
+      "connection": "Harbor Ops India",
+      "access": "read-only",
+      "tool": "workspace.read_source",
+      "last_sync": "2026-09-26T10:16:00+05:30"
+    },
+    "records": [
+      {
+        "invoice": "INV-2048",
+        "vendor": "Northstar Systems",
+        "amount": 480000,
+        "currency": "INR",
+        "status": "In processing",
+        "last_update": "2026-09-26T10:15:00+05:30",
+        "next_step": "SAP payment run at 16:00",
+        "owner": "Finance Operations",
+        "purchase_order": "PO-7712"
+      },
+      {
+        "invoice": "INV-2049",
+        "vendor": "BlueRock Services",
+        "amount": 125000,
+        "currency": "INR",
+        "status": "PO mismatch",
+        "last_update": "2026-09-26T09:40:00+05:30",
+        "next_step": "Procurement review",
+        "owner": "Procurement",
+        "purchase_order": "PO-7781"
+      },
+      {
+        "invoice": "APX-778",
+        "vendor": "Apex Industrial",
+        "amount": 720000,
+        "currency": "INR",
+        "status": "Queued for payment",
+        "last_update": "2026-09-26T10:35:00+05:30",
+        "next_step": "SAP payment run at 16:00",
+        "owner": "Finance Operations",
+        "purchase_order": "PO-8842"
+      },
+      {
+        "invoice": "APX-778-R",
+        "vendor": "Apex Industrial",
+        "amount": 720000,
+        "currency": "INR",
+        "status": "Queued for payment",
+        "last_update": "2026-09-26T10:45:00+05:30",
+        "next_step": "SAP payment run at 16:00",
+        "owner": "Finance Operations",
+        "purchase_order": "PO-8842"
+      }
+    ]
+  }
+}
