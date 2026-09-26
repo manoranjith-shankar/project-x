@@ -342,7 +342,6 @@ You maintain ngrok + Vercel `NGROK_URL`; they never paste the ngrok link.
 1. Open the URL yourself; click **The problem** → **Open John**.
 2. **Clear workspace** if you want a fresh run.
 3. Add all four sources → click **Invoice status** once to confirm John answers.
-4. Follow **`DEMO.md`**.
 
 Viewers can ignore the health check; you check it once:
 
