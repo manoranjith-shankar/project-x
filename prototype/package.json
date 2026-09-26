@@ -10,7 +10,8 @@
     "start": "node server.mjs",
     "check": "node --check server.mjs && node --check public/app.js && node --check mcp/workspace-mcp.mjs",
     "test:ui": "node scripts/ui-smoke.mjs",
-    "pdf": "bash scripts/export-solution-pdf.sh"
+    "pdf": "bash scripts/export-solution-pdf.sh",
+    "pdf:one-pager": "node scripts/export-one-pager-pdf.mjs"
   },
   "dependencies": {
     "yaml": "^2.8.1"

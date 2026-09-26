@@ -1,6 +1,6 @@
 # John AI Agent
 
-The judge-facing workflow-agent prototype lives in [`prototype/`](./prototype/).
+The workflow-agent prototype lives in [`prototype/`](./prototype/).
 
 ## Run locally
 
@@ -16,5 +16,6 @@ Hermes Agent must also be installed. Follow the complete setup, verification, tr
 
 - Local application: `http://localhost:4740`
 - One-page solution: [`prototype/SOLUTION-ONE-PAGER.md`](./prototype/SOLUTION-ONE-PAGER.md)
+- Print-ready PDF: [`prototype/SOLUTION-ONE-PAGER.pdf`](./prototype/SOLUTION-ONE-PAGER.pdf)
 - Presentation script: [`prototype/DEMO.md`](./prototype/DEMO.md)
 - Deployment guide: [`prototype/DEPLOYMENT.md`](./prototype/DEPLOYMENT.md)

@@ -1,64 +1,94 @@
 <style>
-@page { size: A4; margin: 11mm; }
-body { font-size: 9.4pt; line-height: 1.25; }
-h1 { font-size: 20pt; margin: 0 0 3mm; }
-h2 { font-size: 12pt; margin: 3mm 0 1mm; }
-p, ul { margin: 1.2mm 0; }
-li { margin: 0.6mm 0; }
-.subtitle { color: #555; font-size: 11pt; }
+@page { size: A4; margin: 10mm; }
+body { font-size: 9pt; line-height: 1.22; }
+h1 { font-size: 20pt; margin: 0 0 2mm; }
+h2 { font-size: 11.5pt; margin: 2.5mm 0 1mm; }
+p, ul { margin: 1mm 0; }
+li { margin: 0.5mm 0; }
 </style>
 
-# John — an AI agent for enterprise workflow handoffs
+# John — Technical Solution Architecture
 
-<p class="subtitle"><strong>One workspace. Connected context. Grounded decisions. Safe actions.</strong></p>
+**Objective:** close enterprise workflow handoffs by giving one scoped AI agent the context, skills, and tools required to produce a grounded next action—without granting unrestricted system access.
 
-## The problem
-
-Enterprise systems contain the answer, but workflows fail **between systems and owners**. Finance updates SAP, Operations works from email, deadlines live in calendars, and ownership was agreed in a meeting. Nobody sees the complete state when action is due.
-
-- **Missed handoff:** INV-2048 moved to processing, but Mano missed the shared-mailbox update. The supplier received no answer before noon, putting a delivery slot and trust at risk.
-- **Duplicate-payment risk:** a corrected ₹7.2 lakh invoice arrived with a new ID. Both records looked valid alone and entered the SAP queue.
-
-Dashboards expose records, rules handle known paths, and chatbots answer questions. None owns the cross-system decision and next safe action.
-
-## The proposed solution
-
-**John is a workspace-scoped workflow agent in Slack.** A workspace is the tool integrations connected for one team: Microsoft 365 Mail and Calendar, Teams notes, and SAP invoice records. John can read only those sources.
-
-John identifies the job, loads a skill, opens the minimum relevant sources, reconciles state, and answers with evidence. A scheduler can invoke controls before deadlines. High-impact actions are proposed for review, not executed silently.
-
-## Architecture
+## System architecture
 
 ```mermaid
 flowchart LR
-  U["Team in Slack"] --> R["Route request"]
-  C["Scheduler / cron<br/>15:30 control"] --> H
-  R --> H["Hermes Agent<br/>job-specific skill"]
-  H --> M["Allowlisted MCP<br/>read_source"]
-  M --> S["Mail · Calendar<br/>Teams · SAP"]
-  S --> H
-  H --> E["Grounded answer<br/>risk + evidence + next action"]
-  E --> A["Human approval<br/>for external action"]
-  H --> T["Visible skill<br/>and tool trace"]
+  subgraph Entry["Entry points"]
+    UI["Slack-style Web UI"]
+    CRON["Scheduler / Cron"]
+  end
+  UI --> API
+  CRON --> API
+  subgraph APP["Node.js application"]
+    API["HTTP API + workspace state"]
+    ROUTER["Intent router<br/>DeepSeek V4 Flash"]
+    TRACE["Trace + action boundary"]
+    API --> ROUTER
+  end
+  ROUTER --> AGENT
+  subgraph AI["Agent runtime"]
+    AGENT["Hermes Agent<br/>DeepSeek V4 Pro"]
+    SKILL["Job-specific SKILL.md"]
+    AGENT --- SKILL
+  end
+  AGENT <-->|stdio| MCP
+  subgraph TOOLS["Tool and integration layer"]
+    MCP["Workspace MCP server<br/>allowlisted read_source"]
+    SRC["Mail · Calendar · Teams · SAP"]
+    MCP --> SRC
+  end
+  AGENT --> TRACE
+  TRACE --> UI
 ```
 
-## How the AI works
+## Technical stack
 
-- **DeepSeek V4 Flash** routes the request; it does not answer or open files.
-- **DeepSeek V4 Pro + Hermes** follows the skill, chooses allowed source calls, reconciles records, and responds.
-- **Scoped MCP:** `read_source` accepts only connected IDs; file, terminal, web, browser, and send tools are disabled.
-- **Safety:** removal revokes access, cross-workspace requests are refused, source wording is preserved, and external action requires a gate.
-- Skills, tools, scheduling, and visible traces make John an agent—not a chatbot over pasted context.
+- **Frontend:** semantic HTML, CSS, and vanilla JavaScript; Slack-style interaction, integration setup, source inspection, workflow visualisation, and tool trace.
+- **Application runtime:** Node.js 22; framework-free HTTP server serving static assets and JSON endpoints on port `4740`.
+- **Model gateway:** OpenRouter. DeepSeek V4 Flash performs low-cost deterministic intent routing; DeepSeek V4 Pro performs tool-using reasoning.
+- **Agent framework:** Hermes Agent in one-shot mode. Each routed job loads one versioned `SKILL.md`; interactive access to terminal, browser, web, general files, and sending is disabled.
+- **Tool protocol:** Model Context Protocol over `stdio`. The dedicated workspace MCP exposes only `read_source` and approval-gated draft storage.
+- **Data and state:** JSON-backed integration records, connected-source IDs, pending draft, and action log. An app-specific `HERMES_HOME` keeps agent configuration, sessions, and trace data isolated.
+- **Testing and delivery:** Playwright browser smoke test; npm scripts; single Node process deployable behind Caddy/nginx or a secure tunnel.
 
-## What the working prototype proves
+## Request execution
 
-1. Start empty; connect/remove four integrations; inspect every JSON value available to John.
-2. Play the **without-John** handoff failure through escalation and deadline impact.
-3. Ask in Slack. Hermes reads inbox, register, and calendar, then returns status, the 16:00 SAP run, evidence, and a reminder offer.
-4. See the loaded skill and every source call; remove a source to disable the request; request another company’s files to prove refusal.
-5. Demonstrate the proposed **15:30 cron control**: correlate vendor + PO + amount + revision timing, propose holding the duplicate, and retain an AP reviewer.
+1. `server.mjs` receives a Slack request or scheduled event and validates workspace readiness.
+2. Flash returns only an allowed route label; cross-workspace requests stop before Hermes starts.
+3. The server invokes Hermes with the selected skill, provider, worker model, and bounded turn budget.
+4. Hermes calls the workspace MCP. MCP checks both the source allowlist and whether that source is connected.
+5. The worker reconciles returned records and produces a grounded response. The server returns the answer, selected skill, opened-source trace, and any proposed action.
 
-**Implemented:** JSON-backed integrations, live inference, Hermes skills, MCP isolation, Slack UI, trace, and refusal.  
-**Production next:** live connectors, actual cron, approved reminder/payment-hold actions, durable audit storage, and stronger tenant isolation.
+## Security and control plane
 
-**Outcome:** John closes the gap between “the system was updated” and “the right person took the right action”—before that gap costs money, time, or reputation.
+- **Least privilege:** tools accept source IDs, not arbitrary paths or credentials.
+- **Tenant boundary:** disconnected or foreign workspace sources cannot be opened; removing a source revokes access immediately.
+- **Prompt-independent enforcement:** access checks live in MCP and server code, below model instructions.
+- **Action separation:** reading, proposing, approving, and executing are separate capabilities; this build does not send mail or create reminders.
+- **Auditability:** the UI exposes the selected skill and tool calls; approved/held decisions can be persisted separately from chat history.
+- **Secrets:** the OpenRouter key stays in `.env` and the local Hermes home; it is never sent to the browser.
+
+## Operational topology and failure handling
+
+- The browser is an untrusted presentation surface. It receives workspace metadata and answers, never provider credentials or arbitrary filesystem access.
+- The Node host is the orchestration boundary: `/api/workspace` manages connections, `/api/source/:id` exposes inspectable records, `/api/ask` runs the agent, and `/api/health` verifies Hermes/model readiness.
+- Each request invokes Hermes as a bounded child process. Hermes launches the MCP server over `stdio`; MCP returns structured source payloads and the server reconstructs the visible trace from the agent session.
+- Refusals stop before model tools; missing sources disable Ask; tool/model failures return an explicit UI error instead of silently continuing.
+- Production hardening adds authenticated tenant identity, encrypted connector credentials, durable state, queued workers, retries/idempotency for approved actions, metrics, and alerting.
+
+## Key architecture decisions
+
+- **Two-model split:** keep frequent intent routing fast and inexpensive while reserving the stronger worker for grounded multi-source reasoning.
+- **Skills over one giant prompt:** each job has versioned, reviewable instructions and a bounded tool surface.
+- **MCP as the integration seam:** models never receive connector credentials; local adapters can become Microsoft Graph, Teams, or SAP clients without changing skills.
+- **Deterministic controls around probabilistic reasoning:** code owns source access, refusal, action gates, and audit; the model owns interpretation and response composition.
+
+## Prototype implementation vs production adapters
+
+**Implemented and executable:** Node API/UI, live model inference, Hermes skill execution, MCP source isolation, inspectable integration payloads, source revocation, refusal, and trace.
+
+**Represented in the prototype:** Microsoft 365, Teams, SAP, Slack, and the 15:30 trigger use local adapters/UI simulation. Production replaces those adapters with Microsoft Graph, Teams/meeting APIs, SAP APIs or events, Slack APIs, a durable database, and Hermes cron or an enterprise scheduler—without changing the agent/skill/MCP boundary.
+
+**Core design choice:** models reason over context; deterministic code controls identity, source access, tool availability, approvals, and audit.

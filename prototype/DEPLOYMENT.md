@@ -1,8 +1,8 @@
-# Deploy the full demo for judges
+# Deploy the full demo
 
 Complete the local setup in [`README.md`](./README.md) first. A deployment is ready only when `/api/health` reports both `hermes: true` and `model: true`.
 
-Locally, **`npm start`** in `prototype/` runs one process that serves the UI, API, and Hermes requests. Judges need one public URL to that server—not Vercel static hosting alone.
+Locally, **`npm start`** in `prototype/` runs one process that serves the UI, API, and Hermes requests. Viewers need one public URL to that server—not Vercel static hosting alone.
 
 **Vercel is not enough** for “Ask John” and live answers. Use one of the options below.
 
@@ -29,7 +29,7 @@ Pick one:
 3. Configure a **public hostname** in the Zero Trust dashboard: `demo.yourdomain.com` → `http://localhost:4740`.
 4. Run the tunnel daemon (`cloudflared tunnel run john-demo`) whenever the demo should be up.
 
-Judges always use **`https://demo.yourdomain.com`**. If the tunnel process stops, the URL is the same after you start it again (as long as DNS/config unchanged).
+Viewers always use **`https://demo.yourdomain.com`**. If the tunnel process stops, the URL is the same after you start it again (as long as DNS/config unchanged).
 
 **ngrok reserved domain:** In the ngrok dashboard, assign a fixed subdomain to your account and start the agent with that config so the URL never changes between restarts.
 
@@ -43,7 +43,7 @@ ngrok http 4740
 
 Use the printed **https** URL only for that session. Laptop must stay on.
 
-**Downside of any laptop tunnel:** If your machine sleeps or the process dies, judges cannot reach the demo until you start server + tunnel again (URL is stable only with Cloudflare named tunnel / ngrok reserved domain).
+**Downside of any laptop tunnel:** If your machine sleeps or the process dies, viewers cannot reach the demo until you start server + tunnel again (URL is stable only with Cloudflare named tunnel / ngrok reserved domain).
 
 ---
 
@@ -93,11 +93,11 @@ Check from the server:
 curl -s http://127.0.0.1:4740/api/health
 ```
 
-### 4. Give judges HTTPS
+### 4. Add HTTPS
 
 Point a domain (or the VM’s public IP) at the box and put **nginx** or **Caddy** in front, proxying to `127.0.0.1:4740`. Use a long read timeout (≥ 120s) for `/api/ask`.
 
-Or open **4740** in the firewall and share `http://YOUR_IP:4740` (works but no HTTPS—fine for internal judges only).
+Or open **4740** in the firewall and share `http://YOUR_IP:4740` (works but no HTTPS—fine for internal use only).
 
 ### 5. Keep it running
 
@@ -112,7 +112,7 @@ pm2 save
 pm2 startup
 ```
 
-**Share with judges:** `https://your-demo.example.com` (or your tunnel/IP URL).
+**Share:** `https://your-demo.example.com` (or your tunnel/IP URL).
 
 ---
 
@@ -128,7 +128,7 @@ The platform must support a long-running process and a Hermes installation. Most
 
 Vercel can **manage DNS** for your domain; it does **not** run this demo’s backend (Hermes + `server.mjs`). Use a **subdomain** that points to wherever the app actually runs.
 
-**Stable link for judges:** e.g. `https://demo.yourdomain.com` — same URL forever; only the server behind it must stay up.
+**Stable public link:** e.g. `https://demo.yourdomain.com` — same URL forever; only the server behind it must stay up.
 
 ### Recommended: subdomain → cloud VM
 
@@ -140,7 +140,7 @@ Vercel can **manage DNS** for your domain; it does **not** run this demo’s bac
    - Or **CNAME** → your PaaS hostname if you use Railway/Fly instead of a raw IP.
 3. Wait for DNS (minutes to a few hours). Open `https://demo.yourdomain.com` and run the health check.
 
-Judges use **`https://demo.yourdomain.com`**. Your domain stays on Vercel; only DNS points at the demo server.
+Viewers use **`https://demo.yourdomain.com`**. Your domain stays on Vercel; only DNS points at the demo server.
 
 ### Alternative: subdomain → laptop (persistent tunnel)
 
@@ -152,7 +152,7 @@ If the app stays on your Mac but you want a **fixed** hostname on your Vercel do
    - **Name:** `demo`
    - **Value:** that `*.cfargotunnel.com` hostname (Cloudflare docs for your tunnel).
 
-You do **not** need to move the domain off Vercel. The tunnel must be running whenever judges visit.
+You do **not** need to move the domain off Vercel. The tunnel must be running whenever someone visits.
 
 ### What not to do
 
@@ -163,7 +163,7 @@ You do **not** need to move the domain off Vercel. The tunnel must be running wh
 
 ## Option D — Stable subdomain on Vercel → ngrok (no CF move)
 
-Use a **second Vercel project** that only redirects your pretty subdomain to whatever ngrok URL is live today. Judges keep **`https://buildfest-johnceodemo.manoranjith.in`** in the submission; when ngrok restarts, you change one env var on Vercel.
+Use a **second Vercel project** that only redirects your public subdomain to whatever ngrok URL is live today. Viewers keep **`https://buildfest-johnceodemo.manoranjith.in`** as the stable link; when ngrok restarts, you change one env var on Vercel.
 
 Code lives in **`prototype/demo-gateway/`**.
 
@@ -195,12 +195,12 @@ Code lives in **`prototype/demo-gateway/`**.
 
 3. **Vercel** → demo-gateway project → **Settings → Environment Variables** → update **`NGROK_URL`** → **Redeploy** (or push a empty commit).
 
-4. Judges open **`https://buildfest-johnceodemo.manoranjith.in`** — Vercel sends them to the current tunnel (307 redirect).
+4. Viewers open **`https://buildfest-johnceodemo.manoranjith.in`** — Vercel sends them to the current tunnel (307 redirect).
 
 ### Caveats
 
 - **Redirect, not proxy:** after the first click, the browser address bar may show the **ngrok** hostname. The submission link stays your subdomain; bookmarks to ngrok will break when the tunnel changes.
-- **Tunnel + server must be running** when judges visit, or the redirect lands on a dead URL.
+- **Tunnel + server must be running** when viewers visit, or the redirect lands on a dead URL.
 - Free ngrok may show an interstitial warning page once per visitor.
 
 ### Optional: keep your subdomain in the address bar
@@ -325,7 +325,7 @@ curl -sL https://buildfest-johnceodemo.manoranjith.in/api/health
 
 Should return JSON with `"ok": true` while server + ngrok are up.
 
-**Submission text for judges**
+**Public link**
 
 Give them only:
 
@@ -337,14 +337,14 @@ You maintain ngrok + Vercel `NGROK_URL`; they never paste the ngrok link.
 
 ---
 
-## Before judges open the link
+## Before sharing the link
 
 1. Open the URL yourself; click **The problem** → **Open John**.
 2. **Clear workspace** if you want a fresh run.
 3. Add all four sources → click **Invoice status** once to confirm John answers.
 4. Follow **`DEMO.md`**.
 
-Health check judges can ignore; you check once:
+Viewers can ignore the health check; you check it once:
 
 ```text
 GET /api/health  →  { "ok": true, "hermes": true, "model": true }
@@ -361,4 +361,4 @@ GET /api/health  →  { "ok": true, "hermes": true, "model": true }
 | Fixed URL, no laptop | **Option B** — VM + `npm start` + HTTPS |
 | Vercel only | UI only; **Ask John will not work** |
 
-**One sentence:** Deploy `prototype/` on a host with Node, Hermes, dependencies from `npm ci`, and `OPENROUTER_API_KEY`; run `npm start` continuously and send judges that URL.
+**One sentence:** Deploy `prototype/` on a host with Node, Hermes, dependencies from `npm ci`, and `OPENROUTER_API_KEY`; run `npm start` continuously and share that URL.

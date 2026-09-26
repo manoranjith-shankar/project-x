@@ -11,7 +11,6 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)));
 const workspaceDir = path.join(root, "workspace");
 const hermesHome = path.join(root, "hermes-home");
 const publicDir = path.join(root, "public");
-const port = Number(process.env.PORT || 4740);
 
 const SKILLS = {
   invoice_status: { id: "invoice-status", title: "Invoice status" },
@@ -84,10 +83,12 @@ function loadEnv() {
       value = value.slice(1, -1);
     }
     if (key === "OPENROUTER_API_KEY" && value) process.env.OPENROUTER_API_KEY = value;
+    if (key === "PORT" && value) process.env.PORT = value;
   }
 }
 
 loadEnv();
+const port = Number(process.env.PORT || 4740);
 
 function hermesBin() {
   if (process.env.HERMES_BIN) return process.env.HERMES_BIN;

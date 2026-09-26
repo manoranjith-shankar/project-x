@@ -113,7 +113,8 @@ PORT=8080 npm start
 7. Remove a source to demonstrate that access and the Ask action are revoked.
 
 Use [`DEMO.md`](./DEMO.md) for the timed seven-minute presentation.
-Use [`SOLUTION-ONE-PAGER.md`](./SOLUTION-ONE-PAGER.md) as the judge-facing problem, solution, architecture, and prototype summary.
+Use [`SOLUTION-ONE-PAGER.md`](./SOLUTION-ONE-PAGER.md) as the presentation-ready problem, solution, architecture, and prototype summary.
+The print-ready version is [`SOLUTION-ONE-PAGER.pdf`](./SOLUTION-ONE-PAGER.pdf); regenerate it with `npm run pdf:one-pager`.
 
 ## Development checks
 
@@ -157,7 +158,7 @@ prototype/
 ├── skills/                 Hermes job instructions
 ├── workspace/              Local integration records
 ├── scripts/ui-smoke.mjs    Browser smoke test
-├── SOLUTION-ONE-PAGER.md    Judge-facing one-page solution
+├── SOLUTION-ONE-PAGER.md    Presentation-ready one-page solution
 ├── DEMO.md                 Seven-minute presentation script
 └── DEPLOYMENT.md           Public hosting options
 ```

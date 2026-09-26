@@ -358,7 +358,7 @@ async function decide(decision, draft) {
 document.querySelector("#chips").innerHTML = flows
   .map(
     (flow, index) =>
-      `<button class="flow${index < 3 ? " judge-flow" : ""}" type="button" data-prompt="${escapeHtml(flow.prompt)}" title="${escapeHtml(flow.proves)}"><span class="step">${flow.step}</span><span class="flow-copy"><strong>${escapeHtml(flow.title)}</strong><span class="flow-hint">${escapeHtml(flow.hint)}</span></span></button>`,
+      `<button class="flow${index < 3 ? " primary-flow" : ""}" type="button" data-prompt="${escapeHtml(flow.prompt)}" title="${escapeHtml(flow.proves)}"><span class="step">${flow.step}</span><span class="flow-copy"><strong>${escapeHtml(flow.title)}</strong><span class="flow-hint">${escapeHtml(flow.hint)}</span></span></button>`,
   )
   .join("");
 document.querySelector("#chips").addEventListener("click", (event) => {

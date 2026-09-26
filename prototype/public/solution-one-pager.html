@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>John — Technical Solution Architecture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      @page { size: A4 portrait; margin: 0; }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; width: 210mm; height: 297mm; }
+      body { color: #1d1916; background: #e7e1d7; font: 8.7pt/1.27 Outfit, Arial, sans-serif; }
+      .page { width: 210mm; height: 297mm; padding: 9mm 10mm 7mm; overflow: hidden; }
+      header { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 8mm; padding-bottom: 3.5mm; border-bottom: 1px solid #bfb6a9; }
+      .kicker, h2 { margin: 0; color: #5f574f; font-size: 6.8pt; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
+      h1 { margin: 1.2mm 0 .8mm; font: 600 21pt/1 Fraunces, Georgia, serif; letter-spacing: -.035em; }
+      .objective { margin: 0; max-width: 145mm; color: #4e4741; font-size: 9.3pt; }
+      .badge { padding: 2mm 3mm; border: 1px solid #8cae98; border-radius: 99px; color: #175c3a; background: #f3f7f4; font-size: 7.2pt; font-weight: 600; white-space: nowrap; }
+      section { margin-top: 3.6mm; }
+      h2 { margin: 0 0 1.5mm .4mm; color: #175c3a; }
+      .architecture { padding: 3mm; border: 1px solid #c9c0b4; border-radius: 3mm; background: #f8f5ef; }
+      .flow { display: grid; grid-template-columns: 1fr .13fr 1.16fr .13fr .95fr .13fr 1.12fr .13fr 1.03fr .13fr 1.15fr; align-items: stretch; gap: .7mm; }
+      .node { min-height: 20mm; display: flex; flex-direction: column; justify-content: center; padding: 2mm; border: 1px solid #c9c0b4; border-radius: 2.2mm; background: #fff; text-align: center; font-size: 7.1pt; line-height: 1.2; }
+      .node strong { margin-bottom: .8mm; font-size: 7.6pt; }
+      .node small { color: #665e56; font-size: 6.3pt; }
+      .node.agent { border-color: #71957d; background: #edf5ef; color: #174d33; }
+      .node.tools { border-color: #ba9b8d; background: #fbefea; }
+      .arrow { display: grid; place-items: center; color: #70675e; font-size: 11pt; }
+      .return { margin: 2mm 0 0; text-align: center; color: #5f574f; font-size: 6.9pt; }
+      .return strong { color: #175c3a; }
+      .stack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.3mm; }
+      .stack article, .panel { padding: 2.8mm 3mm; border: 1px solid #cec5b9; border-radius: 2.6mm; background: #f8f5ef; }
+      .stack h3 { margin: 0 0 .8mm; color: #175c3a; font-size: 8pt; }
+      .stack p { margin: 0; color: #4f4841; font-size: 7.1pt; }
+      .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.8mm; }
+      .panel h2 { margin-left: 0; }
+      ol, ul { margin: 0; padding-left: 4.4mm; }
+      li { margin: 0 0 .8mm; }
+      li:last-child { margin-bottom: 0; }
+      code { font: 6.8pt ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .operations { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5mm; }
+      .operations article { padding: 2.8mm 3mm; border: 1px solid #cec5b9; border-radius: 2.6mm; background: #f8f5ef; }
+      .operations h3 { margin: 0 0 .8mm; color: #175c3a; font-size: 7.8pt; }
+      .operations p { margin: 0; font-size: 7pt; }
+      .decisions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.3mm; }
+      .decisions article { min-height: 17mm; padding: 2.5mm 2.7mm; border: 1px solid #cec5b9; border-radius: 2.5mm; background: #fff; }
+      .decisions strong { display: block; margin-bottom: .7mm; color: #175c3a; font-size: 7.5pt; }
+      .decisions p { margin: 0; font-size: 6.8pt; }
+      .production { display: grid; grid-template-columns: 1fr 1fr; gap: 2.8mm; }
+      .scope { padding: 2.6mm 3mm; border-radius: 2.5mm; background: #fff; border: 1px solid #cec5b9; }
+      .scope strong { display: block; margin-bottom: .7mm; color: #175c3a; font-size: 6.8pt; letter-spacing: .1em; text-transform: uppercase; }
+      .scope p { margin: 0; font-size: 7.3pt; }
+      footer { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 6mm; margin-top: 3mm; padding-top: 2.5mm; border-top: 1px solid #bfb6a9; }
+      footer strong { font: 600 10.7pt/1.15 Fraunces, Georgia, serif; }
+      footer span { color: #5f574f; font-size: 7pt; text-align: right; }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header>
+        <div>
+          <p class="kicker">Technical solution one-pager</p>
+          <h1>John — Technical Solution Architecture</h1>
+          <p class="objective"><strong>Objective:</strong> give one scoped AI agent the context, skills, and tools required to produce a grounded next action—without unrestricted system access.</p>
+        </div>
+        <div class="badge">Working prototype · Hermes + MCP</div>
+      </header>
+
+      <section>
+        <h2>System architecture</h2>
+        <div class="architecture">
+          <div class="flow">
+            <div class="node"><strong>Entry points</strong><small>Slack-style UI<br />Scheduler / cron</small></div>
+            <div class="arrow">→</div>
+            <div class="node"><strong>Node.js application</strong><small>HTTP API<br />workspace state</small></div>
+            <div class="arrow">→</div>
+            <div class="node"><strong>Intent router</strong><small>DeepSeek<br />V4 Flash</small></div>
+            <div class="arrow">→</div>
+            <div class="node agent"><strong>Hermes Agent</strong><small>DeepSeek V4 Pro<br />job SKILL.md</small></div>
+            <div class="arrow">↔</div>
+            <div class="node tools"><strong>Workspace MCP</strong><small>stdio<br />allowlisted tools</small></div>
+            <div class="arrow">→</div>
+            <div class="node"><strong>Integrations</strong><small>Mail · Calendar<br />Teams · SAP</small></div>
+          </div>
+          <p class="return"><strong>Return path:</strong> grounded answer + selected skill + opened-source trace + proposed action → Node API → Slack UI / approval gate</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Technical stack</h2>
+        <div class="stack">
+          <article><h3>Frontend</h3><p>Semantic HTML, CSS, vanilla JavaScript; Slack interaction, integration setup, source inspection, workflow visualisation, and trace.</p></article>
+          <article><h3>Application</h3><p>Node.js 22, framework-free HTTP server, static assets and JSON APIs, one process on port 4740.</p></article>
+          <article><h3>Models</h3><p>OpenRouter gateway. V4 Flash routes; V4 Pro performs bounded, tool-using reasoning.</p></article>
+          <article><h3>Agent</h3><p>Hermes one-shot runtime; versioned SKILL.md per job; app-specific HERMES_HOME.</p></article>
+          <article><h3>Tools + data</h3><p>MCP over stdio; read_source and gated draft storage; JSON integration records and action state.</p></article>
+          <article><h3>Testing + deploy</h3><p>Playwright smoke test and npm scripts; deploy behind Caddy/nginx or a secure tunnel.</p></article>
+        </div>
+      </section>
+
+      <section class="detail-grid">
+        <article class="panel">
+          <h2>Request execution</h2>
+          <ol>
+            <li><code>server.mjs</code> receives a Slack request or scheduled event and validates workspace readiness.</li>
+            <li>Flash returns an allowed route label; cross-workspace requests stop before Hermes.</li>
+            <li>The server starts Hermes with one skill, provider, worker model, and bounded turn budget.</li>
+            <li>Hermes calls MCP; MCP checks the source allowlist and connection state.</li>
+            <li>The server returns answer, skill, source trace, and proposed action.</li>
+          </ol>
+        </article>
+        <article class="panel">
+          <h2>Security and control plane</h2>
+          <ul>
+            <li><strong>Least privilege:</strong> source IDs, never arbitrary paths.</li>
+            <li><strong>Enforced below prompts:</strong> server + MCP own access decisions.</li>
+            <li><strong>Revocation:</strong> removing a source blocks the next call immediately.</li>
+            <li><strong>Tool restriction:</strong> terminal, web, browser, general files, and sending disabled.</li>
+            <li><strong>Action separation:</strong> read, propose, approve, and execute are distinct.</li>
+            <li><strong>Audit:</strong> visible skill/tool trace; secrets remain server-side.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section>
+        <h2>Operational topology and failure handling</h2>
+        <div class="operations">
+          <article><h3>Process boundary</h3><p>The browser is untrusted and receives no secrets. Node owns workspace state and starts bounded Hermes child processes; Hermes launches MCP over stdio.</p></article>
+          <article><h3>API + observability</h3><p><code>/api/workspace</code>, <code>/api/source/:id</code>, <code>/api/ask</code>, and <code>/api/health</code> expose setup, inspection, execution, and readiness. Session events produce the visible trace.</p></article>
+          <article><h3>Failure posture</h3><p>Refusals stop before tools; missing sources disable Ask; tool/model errors surface explicitly. Production adds queues, retry/idempotency, metrics, alerts, and encrypted connector credentials.</p></article>
+        </div>
+      </section>
+
+      <section>
+        <h2>Key architecture decisions</h2>
+        <div class="decisions">
+          <article><strong>Two-model split</strong><p>Fast, inexpensive routing; stronger reasoning only for grounded multi-source work.</p></article>
+          <article><strong>Skills, not one prompt</strong><p>Each job has versioned instructions, a bounded turn budget, and a reviewable tool surface.</p></article>
+          <article><strong>MCP integration seam</strong><p>Connector credentials stay outside the model; adapters can change without rewriting skills.</p></article>
+          <article><strong>Deterministic control</strong><p>Code owns access, refusal, approvals, and audit; the model owns interpretation and composition.</p></article>
+        </div>
+      </section>
+
+      <section>
+        <h2>Prototype implementation vs production adapters</h2>
+        <div class="production">
+          <div class="scope"><strong>Implemented and executable</strong><p>Node API/UI, live inference, Hermes skills, MCP isolation, inspectable payloads, source revocation, refusal, and trace.</p></div>
+          <div class="scope"><strong>Production substitution</strong><p>Replace local adapters with Microsoft Graph, Teams/meeting APIs, SAP events/APIs, Slack APIs, durable storage, and Hermes cron or an enterprise scheduler. The skill/MCP boundary remains unchanged.</p></div>
+        </div>
+      </section>
+
+      <footer>
+        <strong>Models reason over context; deterministic code controls access, actions, and audit.</strong>
+        <span>Node.js · OpenRouter · DeepSeek V4 · Hermes Agent · MCP · Playwright</span>
+      </footer>
+    </main>
+  </body>
+</html>

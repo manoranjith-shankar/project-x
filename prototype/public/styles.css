@@ -50,8 +50,8 @@ button:disabled { opacity: 0.6; cursor: wait; }
 .slack-suggestions .flow { width: auto; grid-template-columns: auto 1fr; padding: 8px 10px; border-radius: 999px; }
 .slack-suggestions .flow .step, .slack-suggestions .flow-hint { display: none; }
 .slack-suggestions .flow-copy strong { font-size: 13px; }
-.slack-suggestions .flow.judge-flow { border-left: 1px solid var(--line); border-color: #4a154b; }
-.slack-suggestions .flow:not(.judge-flow) { opacity: 0.72; }
+.slack-suggestions .flow.primary-flow { border-left: 1px solid var(--line); border-color: #4a154b; }
+.slack-suggestions .flow:not(.primary-flow) { opacity: 0.72; }
 .slack-surface .compose-label { padding: 0 14px; }
 .slack-surface .ask { margin: 0 14px 14px; border-radius: 11px; }
 .slack-surface .result, .slack-surface .status, .slack-surface .error { margin-left: 14px; margin-right: 14px; }
@@ -145,8 +145,8 @@ code { font-family: ui-monospace, monospace; font-size: 0.92em; }
   padding: 12px;
 }
 .flow:hover { background: #efeae3; }
-.flow.judge-flow { border-left: 4px solid var(--green); }
-.flow:not(.judge-flow) { opacity: 0.72; }
+.flow.primary-flow { border-left: 4px solid var(--green); }
+.flow:not(.primary-flow) { opacity: 0.72; }
 .flow:disabled { cursor: not-allowed; opacity: 0.45; }
 .flow-copy { display: block; min-width: 0; }
 .flow-hint { display: block; margin-top: 3px; font-size: 13px; line-height: 1.4; color: var(--muted); }

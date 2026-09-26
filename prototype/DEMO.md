@@ -1,4 +1,4 @@
-# John AI Agent — 7-minute judge demo
+# John AI Agent — 7-minute demo
 
 ## Before the clock
 
@@ -31,7 +31,7 @@ Add **Email**, **Calendar**, **Call note**, and **Invoice register**. Point to e
 
 Click **Email** once, show the JSON payload, then close it.
 
-> The judge can inspect every value exposed to John, including the integration, access mode, sync time, and ten email records.
+> The audience can inspect every value exposed to John, including the integration, access mode, sync time, and ten email records.
 
 Click **Simulate without John**.
 
