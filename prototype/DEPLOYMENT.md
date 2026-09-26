@@ -163,7 +163,7 @@ You do **not** need to move the domain off Vercel. The tunnel must be running wh
 
 ## Option D — Stable subdomain on Vercel → ngrok (no CF move)
 
-Use a **second Vercel project** that only redirects your pretty subdomain to whatever ngrok URL is live today. Judges keep **`https://john-ceo-demo.manoranjith.in`** in the submission; when ngrok restarts, you change one env var on Vercel.
+Use a **second Vercel project** that only redirects your pretty subdomain to whatever ngrok URL is live today. Judges keep **`https://buildfest-johnceodemo.manoranjith.in`** in the submission; when ngrok restarts, you change one env var on Vercel.
 
 Code lives in **`prototype/demo-gateway/`**.
 
@@ -171,7 +171,7 @@ Code lives in **`prototype/demo-gateway/`**.
 
 1. **Vercel → Add project** → import the same repo.
 2. **Root Directory:** `prototype/demo-gateway`
-3. **Domains:** add **`john-ceo-demo.manoranjith.in`** (Vercel will show DNS if needed; domain already on Vercel is fine).
+3. **Domains:** add **`buildfest-johnceodemo.manoranjith.in`** (Vercel will show DNS if needed; domain already on Vercel is fine).
 4. **Environment variable** (Production):
 
    | Name | Example value |
@@ -195,7 +195,7 @@ Code lives in **`prototype/demo-gateway/`**.
 
 3. **Vercel** → demo-gateway project → **Settings → Environment Variables** → update **`NGROK_URL`** → **Redeploy** (or push a empty commit).
 
-4. Judges open **`https://john-ceo-demo.manoranjith.in`** — Vercel sends them to the current tunnel (307 redirect).
+4. Judges open **`https://buildfest-johnceodemo.manoranjith.in`** — Vercel sends them to the current tunnel (307 redirect).
 
 ### Caveats
 
@@ -299,7 +299,7 @@ You still run **`npm start` locally**; ngrok only exposes port 4740.
 
 5. **Deploy** once (even if ngrok is not running yet—you can fix `NGROK_URL` after).
 
-6. **Domains** → **Add** → `john-ceo-demo.manoranjith.in`
+6. **Domains** → **Add** → `buildfest-johnceodemo.manoranjith.in`
    - If `manoranjith.in` is already on this Vercel team, confirm the **CNAME** / assignment Vercel shows.
    - This subdomain should attach to **this** project only (not the static `prototype/public` project, if you have one).
 
@@ -314,13 +314,13 @@ You still run **`npm start` locally**; ngrok only exposes port 4740.
 **Verify the full chain**
 
 ```bash
-curl -sI https://john-ceo-demo.manoranjith.in/api/health
+curl -sI https://buildfest-johnceodemo.manoranjith.in/api/health
 ```
 
 You should see **`307`** with a `Location:` header pointing at your current ngrok URL. Follow it:
 
 ```bash
-curl -sL https://john-ceo-demo.manoranjith.in/api/health
+curl -sL https://buildfest-johnceodemo.manoranjith.in/api/health
 ```
 
 Should return JSON with `"ok": true` while server + ngrok are up.
@@ -330,7 +330,7 @@ Should return JSON with `"ok": true` while server + ngrok are up.
 Give them only:
 
 ```text
-https://john-ceo-demo.manoranjith.in
+https://buildfest-johnceodemo.manoranjith.in
 ```
 
 You maintain ngrok + Vercel `NGROK_URL`; they never paste the ngrok link.
